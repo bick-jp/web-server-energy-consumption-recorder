@@ -367,6 +367,8 @@ fig.savefig(pngName2)
 plt.show()
 
 
+"""
+#FORGET ABOUT AVERAGE FOR NOW!!!
 # In[30]:
 
 
@@ -526,10 +528,4 @@ pngName2 = testDirectoryPath +"aggregator_overlay-"+str(datetime.date.today())+"
 print(pngName2)
 fig.savefig(pngName2)
 plt.show()
-
-
-# In[ ]:
-
-
-
-
+"""
