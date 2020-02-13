@@ -1,0 +1,7 @@
+# stuff to ignore
+
+ipAddresses_homenetwork.txt
+
+*.sublime-project
+*.sublime-workspace
+#*.png
