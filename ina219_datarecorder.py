@@ -9,9 +9,9 @@ import numpy as np
 import pandas as pd
 import csv
 
-def recordEnergyConsumption():
+def recordEnergyConsumption(path='data'):
     print("ina219 start")
-    fileName = 'data/ina219-'+str(datetime.date.today())+'-'+str(int(time.time()))+'.csv'
+    fileName = path+'/ina219-'+str(datetime.date.today())+'-'+str(int(time.time()))+'.csv'
     print(fileName)
 
     i2c_bus = board.I2C()
@@ -45,7 +45,7 @@ def recordEnergyConsumption():
     dataDF = pd.DataFrame(columns=['mA','V','time'])
 
     #testTime = float(sys.argv[1])
-    testTime = 5
+    testTime = 600
 
     #clear sample lists
     #testResults = []

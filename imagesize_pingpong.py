@@ -42,7 +42,7 @@ class SolarServerTest:
         self.driver.close()
         #self.driver.quit()
 
-def pingpongImage():
+def pingpongImage(path='data'):
     print("pingpong start")
     
     SERVER_IP = ""
@@ -53,7 +53,7 @@ def pingpongImage():
         print("Error: no ip address given.")
         sys.exit()
 
-    fileName = 'data/selenium-'+str(datetime.date.today())+'-'+str(int(time.time()))+'.csv' 
+    fileName = path+'/selenium-'+str(datetime.date.today())+'-'+str(int(time.time()))+'.csv' 
     print (fileName)
     print("")
 
@@ -67,17 +67,17 @@ def pingpongImage():
     """
     testTime = 5
 
-    #bookendSleepTime = 60
-    #middleSleepTime = 30
+    bookendSleepTime = 60
+    middleSleepTime = 30
 
-    bookendSleepTime = 5
-    middleSleepTime = 5
+    #bookendSleepTime = 5
+    #middleSleepTime = 5
 
     #60 seconds idle
     time.sleep(bookendSleepTime)
 
     #open
-    times = 1
+    times = 4
 
     # run the whole thing i times to account for start up weirdness
     for i in list(range(times)):
