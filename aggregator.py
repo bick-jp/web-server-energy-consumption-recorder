@@ -1,8 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # In[1]:
-
 
 import csv
 import numpy as np
@@ -12,6 +8,7 @@ import time
 import datetime
 import glob
 import matplotlib.patches as mpatches
+import sys
 
 
 # In[2]:
@@ -23,75 +20,49 @@ def aggregate(path):
     fileList = glob.glob(testDirectoryPath  + "*.csv")
 
     print(testDirectoryPath)
-    fileList
-
 
     # In[3]:
-
-
     inaFileName = [k for k in fileList if 'ina' in k]
-
-    inaFileName[0]
 
 
     # In[4]:
-
-
     selFileName = [k for k in fileList if 'selenium' in k]
-
-    selFileName[0]
-
-
+    
     # In[5]:
-
-
     #For CSV files
     inaData = pd.read_csv(inaFileName[0]).fillna(0)
 
 
     # In[6]:
-
-
     print(inaData.shape)
     inaData.head()
 
 
     # In[7]:
-
-
     #add power
     type(inaData)
 
 
     # In[8]:
-
-
     inaData.insert(2, 'watts', (inaData.mA / 1000.0) * inaData.V, True)
 
 
     # In[9]:
-
-
     inaData.head()
 
 
     # In[10]:
-
-
     #averages per second
-
     inaLength = inaData.shape[0]
     inaStartTime = inaData.time[0]
     inaEndTime = inaData.time[inaData.shape[0]-1]
     inaTimePeriod = inaEndTime - inaStartTime
     dataPerSecond =inaLength/inaTimePeriod
 
-    dataPerSecond
+
 
 
     # In[11]:
-
-
     averagedINA = pd.DataFrame(columns=['mA','V','watts','time'])
 
     for av in list(range(int(inaTimePeriod))):
@@ -105,36 +76,25 @@ def aggregate(path):
 
 
     # In[12]:
-
-
     print(averagedINA.shape)
     print(averagedINA.tail())
 
 
     # In[13]:
-
-
     seleniumData = pd.read_csv(selFileName[0]).fillna(0)
 
 
     # In[14]:
-
-
     print(seleniumData.shape)
     seleniumData.tail()
 
 
     # In[15]:
-
-
     seleniumData.task.loc[0]
 
 
     # In[16]:
-
-
     # get start and stop times
-
     testTimes = []
 
     currentRound = 0
@@ -145,15 +105,9 @@ def aggregate(path):
         elif 'stop' in seleniumData.task.loc[getT]:
             roundTimes.append(seleniumData.time.loc[getT])
             testTimes.append(roundTimes)
-            
-    testTimes
-
 
     # In[17]:
-
-
     #make new data frames with power data from only test durations
-
     dataFrameSplits = []
 
     #print(averagedINA)
@@ -163,14 +117,10 @@ def aggregate(path):
         #print(averagedINA.loc[(averagedINA.loc[:,'time']>=(testTimes[splitTests][0])) & (averagedINA.loc[:,'time']<=testTimes[splitTests][1])])
     print(len(dataFrameSplits))
 
-    dataFrameSplits
 
 
     # In[18]:
-
-
     #get the max and mins for each test set
-
     for mX in list(range(len(dataFrameSplits))):
         print('------'+str(mX)+'------')
         print ('Max:')
@@ -181,10 +131,7 @@ def aggregate(path):
 
 
     # In[19]:
-
-
     #obviously this isn't automated...
-
     #large average peak
     lPeakAVG =(2.6139504000000002 + 2.596789200000001 + 2.5888593333333336 + 2.6099552000000004) * 0.25
 
@@ -199,23 +146,16 @@ def aggregate(path):
 
 
     # In[20]:
-
-
-
     #graph ina219 all data
     plt.scatter(x=inaData.loc[:,'time'], y=inaData.loc[:,'watts'], color='b')
 
 
     # In[21]:
-
-
     # graph all selenium data
     plt.scatter(x=seleniumData.loc[:,'time'], y=seleniumData.loc[:,'task'], color='b')
 
 
     # In[22]:
-
-
     fig, ax = plt.subplots(dpi=300)
 
     x = averagedINA.loc[:,'time']
@@ -245,8 +185,6 @@ def aggregate(path):
 
 
     # In[23]:
-
-
     fig, ax = plt.subplots(dpi=300)
 
     x = averagedINA.loc[:,'time']
@@ -275,8 +213,6 @@ def aggregate(path):
 
 
     # In[24]:
-
-
     fig, ax = plt.subplots(dpi=300)
 
     x = averagedINA.loc[:,'time']
@@ -305,27 +241,19 @@ def aggregate(path):
 
 
     # In[25]:
-
-
     overlayData = dataFrameSplits
     overlayData[2]
 
 
     # In[26]:
-
-
     list(range(len(dataFrameSplits)))
 
 
     # In[27]:
-
-
     overlayData[0]
 
 
     # In[28]:
-
-
     for overlays in list(range(len(dataFrameSplits))):
         overlayData[overlays].insert(4, 'scaled', overlayData[overlays].time - overlayData[overlays].time[overlayData[overlays].time.index[0]], True)
 
@@ -333,8 +261,6 @@ def aggregate(path):
 
 
     # In[29]:
-
-
     fig, ax = plt.subplots(dpi=300)
     '''
     x = overlayD1.loc[:,'scaled']
@@ -368,23 +294,17 @@ def aggregate(path):
 
 
     """
-    #FORGET ABOUT AVERAGE FOR NOW!!!
+    #KEITA FORGET ABOUT AVERAGE FOR NOW!!!
     # In[30]:
-
-
     #averages
     averagedData = dataFrameSplits
 
 
     # In[31]:
-
-
     averagedData[0].shape[0]
 
 
     # In[32]:
-
-
     #find the shortest length of the data sets
     dataLengths = []
 
@@ -396,20 +316,14 @@ def aggregate(path):
 
 
     # In[33]:
-
-
     averagedData[2].watts.loc[averagedData[2].index[6]]
 
 
     # In[34]:
-
-
     averagedData[0].head()
 
 
     # In[35]:
-
-
     newAveragedDataL = []
     newAveragedDataS = []
 
@@ -432,8 +346,6 @@ def aggregate(path):
 
 
     # In[38]:
-
-
     # make a new data frame
 
 
@@ -470,8 +382,6 @@ def aggregate(path):
 
 
     # In[39]:
-
-
     fig, ax = plt.subplots(dpi=300)
 
 
@@ -498,8 +408,6 @@ def aggregate(path):
 
 
     # In[40]:
-
-
     fig, ax = plt.subplots(dpi=300)
 
     colors = ['r','y']
@@ -529,3 +437,11 @@ def aggregate(path):
     fig.savefig(pngName2)
     plt.show()
     """
+
+if __name__ == "__main__":
+    if (len(sys.argv) > 1):
+        aggregate(str(sys.argv[1]))
+    else:
+        print("Error: no folder name given.")
+        sys.exit()
+
